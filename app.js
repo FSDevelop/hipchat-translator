@@ -21,23 +21,6 @@ app.post('/translate', function(req, res, err) {
     var command = message.split('/translate ');
     var textToTranslate = command[1];
     
-    googleTranslate.translate(textToTranslate, 'es', function(err, translation) {
-        res.send({
-            "color": "green",
-            "message": "Translation: " + translation.translatedText,
-            "notify": false,
-            "message_format": "text"
-        });
-    });
-});
-
-app.post('/spanish', function(req, res, err) {
-    console.log('There is a request from HipChat');
-
-    var message = req.body.item.message.message;
-    var command = message.split('/spanish ');
-    var textToTranslate = command[1];
-    
     googleTranslate.translate(textToTranslate, 'en', function(err, translation) {
         res.send({
             "color": "green",
