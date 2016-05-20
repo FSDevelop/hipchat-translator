@@ -2,7 +2,6 @@ var express = require('express');
 var http = require('http');
 var app = express();
 var bodyParser = require('body-parser');
-var curl = require('node-curl');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -22,21 +21,20 @@ app.post('*', function(req, res, err) {
 
     var API_KEY = "AIzaSyAPD50jtH10mVJbLx070S7hYboy2m3MF9U";
     console.log(textToTranslate);
+    
+    var options = {
+      host: 'googleapis.com',
+      port: 443,
+      path: '/language/translate/v2?q=' + textToTranslate + '&target=es&key=' + API_KEY,
+      method: 'GET'
+    };
 
-
-    curl('https://googleapis.com/language/translate/v2?q=' + textToTranslate + '&target=es&key=' + API_KEY, function(err) {
-        console.log('Curl made.');
-        console.info(this.status);
-        console.info('-----');
-        console.info(this.body);
-        console.info('-----');
-        console.info(this.info('SIZE_DOWNLOAD'));
-
-        res.send({
-            "color": "green",
-            "message": "Translation: test",
-            "notify": false,
-            "message_format": "text"
-        });
+    var reqAPI = http.request(options, function(resAPI) {
+      console.log('STATUS: ' + resAPI.statusCode);
+      console.log('HEADERS: ' + JSON.stringify(resAPI.headers));
+      resAPI.setEncoding('utf8');
+      resAPI.on('data', function (chunk) {
+        console.log('BODY: ' + chunk);
+      });
     });
 });
