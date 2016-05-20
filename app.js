@@ -14,7 +14,7 @@ app.listen(3000, function() {
     console.log('Running Hipchat Translator on port 3000...');
 });
 
-app.post('*', function(req, res, err) {
+app.post('/translate', function(req, res, err) {
     console.log('There is a request from HipChat');
 
     var message = req.body.item.message.message;
